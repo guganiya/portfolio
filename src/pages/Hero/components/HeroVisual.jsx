@@ -165,8 +165,7 @@ const InteractiveHeroCard = () => {
 	// Данные с цветами для иконок
 	const frontendData = {
 		title: 'Frontend Dev',
-		photo:
-			'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+		photo: '/guga.jpg',
 		links: [
 			{ icon: icons.github, url: '#', color: '#ffffff' },
 			{ icon: icons.linkedin, url: '#', color: '#0077b5' },
@@ -176,8 +175,7 @@ const InteractiveHeroCard = () => {
 
 	const fullstackData = {
 		title: 'Fullstack Dev',
-		photo:
-			'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop',
+		photo: '/romik.jpg',
 		links: [
 			{ icon: icons.github, url: '#', color: '#ffffff' },
 			{ icon: icons.globe, url: '#', color: '#d4af37' },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link as ScrollLink } from 'react-scroll'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 const icons = {
 	github: (
@@ -41,16 +42,24 @@ const icons = {
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const location = useLocation()
+	const { t, i18n } = useTranslation()
 
 	useEffect(() => {
 		document.body.style.overflow = isOpen ? 'hidden' : 'unset'
 	}, [isOpen])
 
+	// Массив ссылок теперь использует ключи t()
 	const navLinks = [
-		{ name: 'Главная', to: 'hero', type: 'scroll' },
-		{ name: 'Языки', to: 'language', type: 'scroll' },
-		{ name: 'Проекты', to: 'projects', type: 'scroll' },
-		{ name: 'Контакты', to: '/contact', type: 'router' },
+		{ name: t('nav.home'), to: 'hero', type: 'scroll' },
+		{ name: t('nav.languages'), to: 'language', type: 'scroll' },
+		{ name: t('nav.projects'), to: 'projects', type: 'scroll' },
+		{ name: t('nav.contact'), to: '/contact', type: 'router' },
+	]
+
+	const languages = [
+		{ code: 'tk', label: 'TK' },
+		{ code: 'ru', label: 'RU' },
+		{ code: 'en', label: 'EN' },
 	]
 
 	const socialLinks = [
@@ -87,7 +96,7 @@ const Navbar = () => {
 							{navLinks.map(link =>
 								link.type === 'scroll' && location.pathname === '/' ? (
 									<ScrollLink
-										key={link.name}
+										key={link.to}
 										to={link.to}
 										smooth={true}
 										duration={500}
@@ -100,7 +109,7 @@ const Navbar = () => {
 									</ScrollLink>
 								) : (
 									<RouterLink
-										key={link.name}
+										key={link.to}
 										to={link.type === 'scroll' ? `/#${link.to}` : link.to}
 										className='relative group cursor-pointer text-base font-bold text-zinc-400 hover:text-white transition-colors py-2 px-1'
 									>
@@ -113,43 +122,66 @@ const Navbar = () => {
 						</div>
 					</div>
 
-					{/* ПРАВО: Соцсети в стиле HeroText */}
-					<div className='hidden md:flex items-center gap-4 z-[110]'>
-						{socialLinks.map(social => (
-							<motion.a
-								key={social.name}
-								href={social.href}
-								target='_blank'
-								rel='noreferrer'
-								whileHover={{ scale: 1.1, y: -2 }}
-								whileTap={{ scale: 0.9 }}
-								className='group relative flex items-center justify-center w-11 h-11 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-300'
-							>
-								{/* Цветной фон при ховере */}
-								<div
-									className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl'
-									style={{ backgroundColor: social.color }}
-								/>
+					{/* ПРАВО: Языки + Соцсети */}
+					<div className='hidden md:flex items-center gap-6 z-[110]'>
+						{/* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */}
+						<div className='flex items-center bg-white/5 rounded-lg p-1 border border-white/10'>
+							{languages.map(lang => (
+								<button
+									key={lang.code}
+									onClick={() => i18n.changeLanguage(lang.code)}
+									className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+										i18n.language === lang.code
+											? 'bg-[#d4af37] text-black'
+											: 'text-zinc-400 hover:text-white'
+									}`}
+								>
+									{lang.label}
+								</button>
+							))}
+						</div>
 
-								{/* Иконка */}
-								<div className='relative z-10 text-zinc-500 group-hover:text-white transition-all duration-300'>
-									{social.icon}
-								</div>
-
-								{/* Точка-индикатор снизу */}
-								<div
-									className='absolute bottom-1.5 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300'
-									style={{
-										backgroundColor: social.color,
-										boxShadow: `0 0 8px ${social.color}`,
-									}}
-								/>
-							</motion.a>
-						))}
+						{/* СОЦСЕТИ */}
+						<div className='flex items-center gap-4'>
+							{socialLinks.map(social => (
+								<motion.a
+									key={social.name}
+									href={social.href}
+									target='_blank'
+									rel='noreferrer'
+									whileHover={{ scale: 1.1, y: -2 }}
+									whileTap={{ scale: 0.9 }}
+									className='group relative flex items-center justify-center w-11 h-11 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-300'
+								>
+									<div
+										className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl'
+										style={{ backgroundColor: social.color }}
+									/>
+									<div className='relative z-10 text-zinc-500 group-hover:text-white transition-all duration-300'>
+										{social.icon}
+									</div>
+								</motion.a>
+							))}
+						</div>
 					</div>
 
 					{/* БУРГЕР */}
-					<div className='md:hidden z-[110]'>
+					<div className='md:hidden z-[110] flex items-center gap-4'>
+						<button
+							onClick={() =>
+								i18n.changeLanguage(
+									i18n.language === 'ru'
+										? 'en'
+										: i18n.language === 'en'
+											? 'tk'
+											: 'ru',
+								)
+							}
+							className='text-xs font-bold text-[#d4af37] border border-[#d4af37]/30 px-2 py-1 rounded'
+						>
+							{i18n.language.toUpperCase()}
+						</button>
+
 						<button
 							onClick={() => setIsOpen(!isOpen)}
 							className='flex flex-col items-end justify-center w-10 h-10 space-y-1.5 focus:outline-none'
@@ -160,7 +192,7 @@ const Navbar = () => {
 										? { rotate: 45, y: 8, width: '100%' }
 										: { rotate: 0, y: 0, width: '100%' }
 								}
-								className='h-[2px] bg-white rounded-full transition-all duration-300'
+								className='h-[2px] bg-white rounded-full'
 							/>
 							<motion.span
 								animate={
@@ -168,7 +200,7 @@ const Navbar = () => {
 										? { opacity: 0, x: 20 }
 										: { opacity: 1, x: 0, width: '60%' }
 								}
-								className='h-[2px] bg-[#d4af37] rounded-full transition-all duration-300'
+								className='h-[2px] bg-[#d4af37] rounded-full'
 							/>
 							<motion.span
 								animate={
@@ -176,7 +208,7 @@ const Navbar = () => {
 										? { rotate: -45, y: -8, width: '100%' }
 										: { rotate: 0, y: 0, width: '100%' }
 								}
-								className='h-[2px] bg-white rounded-full transition-all duration-300'
+								className='h-[2px] bg-white rounded-full'
 							/>
 						</button>
 					</div>
@@ -193,58 +225,38 @@ const Navbar = () => {
 						className='fixed inset-0 h-screen w-screen bg-[#0a0a0a] z-[105] flex flex-col items-center justify-center'
 					>
 						<div className='flex flex-col items-center space-y-8'>
+							{/* Переключение языков внутри мобилки */}
+							<div className='flex gap-6 mb-4'>
+								{languages.map(lang => (
+									<button
+										key={lang.code}
+										onClick={() => {
+											i18n.changeLanguage(lang.code)
+											setIsOpen(false)
+										}}
+										className={`text-xl font-bold ${i18n.language === lang.code ? 'text-[#d4af37]' : 'text-zinc-600'}`}
+									>
+										{lang.label}
+									</button>
+								))}
+							</div>
+
 							{navLinks.map((link, i) => (
 								<motion.div
-									key={link.name}
+									key={link.to}
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: i * 0.1 }}
 								>
-									{link.type === 'scroll' && location.pathname === '/' ? (
-										<ScrollLink
-											to={link.to}
-											smooth={true}
-											onClick={() => setIsOpen(false)}
-											className='text-5xl font-black text-zinc-600 hover:text-[#d4af37] cursor-pointer'
-										>
-											{link.name}
-										</ScrollLink>
-									) : (
-										<RouterLink
-											to={link.type === 'scroll' ? `/#${link.to}` : link.to}
-											onClick={() => setIsOpen(false)}
-											className='text-5xl font-black text-zinc-600 hover:text-[#d4af37] cursor-pointer'
-										>
-											{link.name}
-										</RouterLink>
-									)}
+									<RouterLink
+										to={link.type === 'scroll' ? `/#${link.to}` : link.to}
+										onClick={() => setIsOpen(false)}
+										className='text-5xl font-black text-zinc-600 hover:text-[#d4af37] transition-colors'
+									>
+										{link.name}
+									</RouterLink>
 								</motion.div>
 							))}
-
-							{/* Соцсети в мобильном меню */}
-							<motion.div
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ delay: 0.5 }}
-								className='flex space-x-6 pt-12 border-t border-white/5 w-64 justify-center'
-							>
-								{socialLinks.map(social => (
-									<motion.a
-										key={social.name}
-										href={social.href}
-										whileHover={{ scale: 1.1 }}
-										className='group relative flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10'
-									>
-										<div
-											className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl'
-											style={{ backgroundColor: social.color }}
-										/>
-										<div className='text-zinc-500 group-hover:text-white transition-colors scale-125'>
-											{social.icon}
-										</div>
-									</motion.a>
-								))}
-							</motion.div>
 						</div>
 					</motion.div>
 				)}

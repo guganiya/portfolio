@@ -1,54 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 const icons = {
-	linkedin: (
-		<svg
-			xmlns='http://www.w3.org/2000/svg'
-			width='24'
-			height='24'
-			viewBox='0 0 24 24'
-			fill='none'
-			stroke='currentColor'
-			strokeWidth='2'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-		>
-			<path d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z'></path>
-			<rect x='2' y='9' width='4' height='12'></rect>
-			<circle cx='4' cy='4' r='2'></circle>
-		</svg>
-	),
-	whatsapp: (
-		<svg
-			xmlns='http://www.w3.org/2000/svg'
-			width='24'
-			height='24'
-			viewBox='0 0 24 24'
-			fill='none'
-			stroke='currentColor'
-			strokeWidth='2'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-		>
-			<path d='M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z'></path>
-		</svg>
-	),
-	tiktok: (
-		<svg
-			xmlns='http://www.w3.org/2000/svg'
-			width='24'
-			height='24'
-			viewBox='0 0 24 24'
-			fill='none'
-			stroke='currentColor'
-			strokeWidth='2'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-		>
-			<path d='M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5'></path>
-		</svg>
-	),
 	github: (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -65,15 +19,50 @@ const icons = {
 			<path d='M9 18c-4.51 2-5-2-7-2' />
 		</svg>
 	),
+	telegram: (
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			width='24'
+			height='24'
+			viewBox='0 0 24 24'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		>
+			<line x1='22' y1='2' x2='11' y2='13'></line>
+			<polygon points='22 2 15 22 11 13 2 9 22 2'></polygon>
+		</svg>
+	),
+	instagram: (
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			width='24'
+			height='24'
+			viewBox='0 0 24 24'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		>
+			<rect width='20' height='20' x='2' y='2' rx='5' ry='5' />
+			<path d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' />
+			<line x1='17.5' x2='17.51' y1='6.5' y2='6.5' />
+		</svg>
+	),
 }
 
 const HeroText = () => {
+	const { t } = useTranslation()
 	const [displayText, setDisplayText] = useState('')
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [loopNum, setLoopNum] = useState(0)
 	const [typingSpeed, setTypingSpeed] = useState(150)
 
-	const titles = ['Web Developers', 'Front-end', 'Full-stack']
+	// Получаем массив заголовков из i18n
+	const titles = t('hero.titles', { returnObjects: true })
 
 	useEffect(() => {
 		const handleTyping = () => {
@@ -99,18 +88,32 @@ const HeroText = () => {
 
 		const timer = setTimeout(handleTyping, typingSpeed)
 		return () => clearTimeout(timer)
-	}, [displayText, isDeleting, loopNum, typingSpeed])
+	}, [displayText, isDeleting, loopNum, typingSpeed, titles])
 
 	const socialLinks = [
-		{ name: 'linkedin', icon: icons.linkedin, href: '#', color: '#0077b5' },
-		{ name: 'whatsapp', icon: icons.whatsapp, href: '#', color: '#25d366' },
-		{ name: 'tiktok', icon: icons.tiktok, href: '#', color: '#ff0050' },
-		{ name: 'github', icon: icons.github, href: '#', color: '#ffffff' },
+		{
+			name: 'github',
+			icon: icons.github,
+			href: 'https://github.com',
+			color: '#ffffff',
+		},
+		{
+			name: 'telegram',
+			icon: icons.telegram,
+			href: 'https://t.me',
+			color: '#0088cc',
+		},
+		{
+			name: 'Instagram',
+			icon: icons.instagram,
+			href: 'https://instagram.com',
+			color: '#E1306C',
+		},
 	]
 
 	return (
 		<div className='flex flex-col items-center md:items-start text-center md:text-left z-10'>
-			{/* 1. ПРИВЕТСТВИЕ С ИНДИКАТОРОМ */}
+			{/* 1. ПРИВЕТСТВИЕ */}
 			<motion.div
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
@@ -122,8 +125,8 @@ const HeroText = () => {
 					<span className='relative inline-flex rounded-full h-3 w-3 bg-[#d4af37]'></span>
 				</span>
 				<p className='text-zinc-200 text-sm md:text-base font-medium tracking-wide uppercase'>
-					Привет, мы{' '}
-					<span className='text-[#d4af37]'>команда разработчиков</span>
+					{t('hero.greeting')}{' '}
+					<span className='text-[#d4af37]'>{t('hero.team')}</span>
 				</p>
 				<motion.span
 					animate={{ rotate: [0, 20, 0] }}
@@ -134,7 +137,7 @@ const HeroText = () => {
 				</motion.span>
 			</motion.div>
 
-			{/* 2. КОНСОЛЬНЫЙ ЗАГОЛОВОК */}
+			{/* 2. ЗАГОЛОВОК С ПЕЧАТНЫМ ЭФФЕКТОМ */}
 			<div className='h-[100px] md:h-[140px] flex items-center'>
 				<h1 className='text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter text-white uppercase italic'>
 					{displayText}
@@ -151,18 +154,22 @@ const HeroText = () => {
 				transition={{ delay: 0.4, duration: 0.8 }}
 				className='text-zinc-400 text-lg md:text-2xl max-w-2xl mb-12 leading-relaxed font-light'
 			>
-				Воплощаем в код{' '}
-				<span className='text-white font-medium italic'>любые идеи</span>: от
-				высоконагруженных систем до{' '}
-				<span className='text-white font-medium italic'>имиджевых сайтов</span>.
-				Если это можно{' '}
+				{t('hero.description.part1')}{' '}
+				<span className='text-white font-medium italic'>
+					{t('hero.description.part2')}
+				</span>
+				: {t('hero.description.part3')}{' '}
+				<span className='text-white font-medium italic'>
+					{t('hero.description.part4')}
+				</span>
+				. {t('hero.description.part5')}{' '}
 				<span className='text-[#d4af37] font-semibold tracking-wide'>
-					открыть в браузере
+					{t('hero.description.part6')}
 				</span>{' '}
-				— мы это уже создаем.
+				— {t('hero.description.part7')}.
 			</motion.p>
 
-			{/* 4. СОЦСЕТИ (GLASSMORPHISM) */}
+			{/* 4. СОЦСЕТИ */}
 			<div className='flex items-center gap-5 pt-6'>
 				{socialLinks.map((social, idx) => (
 					<motion.a
@@ -175,23 +182,13 @@ const HeroText = () => {
 						whileTap={{ scale: 0.9 }}
 						className='group relative flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-300'
 					>
-						{/* Свечение фона при ховере */}
 						<div
 							className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl'
 							style={{ backgroundColor: social.color }}
 						/>
-
-						{/* Иконка */}
-						<div
-							className='relative z-10 text-zinc-500 group-hover:text-white transition-all duration-300'
-							style={{ filter: `drop-shadow(0 0 10px ${social.color}00)` }}
-						>
-							<span className='group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] transition-all'>
-								{social.icon}
-							</span>
+						<div className='relative z-10 text-zinc-500 group-hover:text-white transition-all duration-300'>
+							{social.icon}
 						</div>
-
-						{/* Точка-индикатор снизу */}
 						<div
 							className='absolute bottom-2 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300'
 							style={{

@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/footer'
 
-// SVG Иконки без изменений...
 const icons = {
 	email: (
 		<svg
@@ -42,6 +42,7 @@ const icons = {
 }
 
 const ContactSection = () => {
+	const { t } = useTranslation()
 	const [status, setStatus] = useState('idle')
 
 	const handleSubmit = async e => {
@@ -57,67 +58,69 @@ const ContactSection = () => {
   `
 
 	return (
-		<>
+		<div className='bg-zinc-950'>
 			<Navbar />
 
 			<section
 				id='contact'
-				// КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ: flex, items-center, justify-center и min-h-screen
-				className='relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-zinc-950'
+				// pt-24 исправляет наложение Navbar на мобилках и десктопе
+				className='relative min-h-screen flex items-center justify-center px-4 py-20 pt-32 lg:pt-24 overflow-hidden'
 			>
-				{/* Декоративное свечение — теперь центрировано относительно экрана */}
-				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none' />
+				{/* Декоративное свечение */}
+				<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-[#d4af37]/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none' />
 
-				<div className='max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10'>
-					{/* ЛЕВАЯ ЧАСТЬ: Текст */}
+				<div className='max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10'>
+					{/* ЛЕВАЯ ЧАСТЬ */}
 					<motion.div
 						initial={{ opacity: 0, x: -50 }}
 						whileInView={{ opacity: 1, x: 0 }}
+						viewport={{ once: true }}
 						transition={{ duration: 0.8 }}
+						className='text-center lg:text-left'
 					>
-						<h2 className='text-5xl md:text-7xl font-black text-white uppercase leading-[0.9] mb-8'>
-							Давайте <br />
-							<span className='text-[#d4af37]'>Создавать</span> <br />
-							Вместе
+						<h2 className='text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase leading-[0.9] mb-8'>
+							{t('contact.title_1')} <br />
+							<span className='text-[#d4af37]'>
+								{t('contact.title_accent')}
+							</span>{' '}
+							<br />
+							{t('contact.title_2')}
 						</h2>
-						<p className='text-zinc-400 text-lg md:text-xl max-w-md font-light leading-relaxed mb-12'>
-							Есть идея или проект? Оставьте заявку, и мы обсудим, как воплотить
-							это в жизнь на высшем уровне.
+						<p className='text-zinc-400 text-lg md:text-xl max-w-md mx-auto lg:mx-0 font-light leading-relaxed mb-12'>
+							{t('contact.description')}
 						</p>
 
-						<div className='space-y-8'>
-							<div className='flex items-center gap-6 group cursor-pointer'>
-								<div className='relative flex items-center justify-center w-16 h-16 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50'>
-									<div className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl bg-[#d4af37]' />
+						<div className='space-y-6 md:space-y-8 flex flex-col items-start'>
+							{/* Email Item */}
+							<div className='flex flex-row items-center gap-4 md:gap-6 group cursor-pointer w-full'>
+								<div className='relative flex-shrink-0 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50'>
 									<div className='relative z-10 text-zinc-400 group-hover:text-[#d4af37] transition-colors duration-500'>
 										{icons.email}
 									</div>
-									<div className='absolute -bottom-1 w-1 h-1 rounded-full bg-[#d4af37] opacity-0 group-hover:opacity-100 blur-[2px] transition-all duration-500' />
 								</div>
-								<div className='flex flex-col'>
-									<span className='text-xs text-zinc-500 uppercase tracking-[0.2em] mb-1'>
-										Напишите нам
+								<div className='flex flex-col text-left'>
+									<span className='text-[10px] md:text-xs text-zinc-500 uppercase tracking-[0.2em] mb-1'>
+										{t('contact.email_label')}
 									</span>
-									<span className='text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors duration-300 text-sm md:text-xl overflow-hidden text-ellipsis'>
+									<span className='text-sm md:text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors duration-300 break-all'>
 										hello@yourbrand.com
 									</span>
 								</div>
 							</div>
 
-							<div className='flex items-center gap-6 group cursor-pointer'>
-								<div className='relative flex items-center justify-center w-16 h-16 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50'>
-									<div className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl bg-[#d4af37]' />
+							{/* Location Item */}
+							<div className='flex flex-row items-center gap-4 md:gap-6 group cursor-pointer w-full'>
+								<div className='relative flex-shrink-0 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50'>
 									<div className='relative z-10 text-zinc-400 group-hover:text-[#d4af37] transition-colors duration-500'>
 										{icons.location}
 									</div>
-									<div className='absolute -bottom-1 w-1 h-1 rounded-full bg-[#d4af37] opacity-0 group-hover:opacity-100 blur-[2px] transition-all duration-500' />
 								</div>
-								<div className='flex flex-col'>
-									<span className='text-xs text-zinc-500 uppercase tracking-[0.2em] mb-1'>
-										Наш офис
+								<div className='flex flex-col text-left'>
+									<span className='text-[10px] md:text-xs text-zinc-500 uppercase tracking-[0.2em] mb-1'>
+										{t('contact.location_label')}
 									</span>
-									<span className='text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors duration-300'>
-										г. Москва, ул. Примерная 10
+									<span className='text-sm md:text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors duration-300'>
+										{t('contact.location_value')}
 									</span>
 								</div>
 							</div>
@@ -128,96 +131,97 @@ const ContactSection = () => {
 					<motion.div
 						initial={{ opacity: 0, y: 50 }}
 						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
 						transition={{ duration: 0.8, delay: 0.2 }}
-						className='relative'
+						className='relative w-full'
 					>
-						<div className='relative z-10 p-8 md:p-12 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl'>
+						<div className='relative z-10 p-6 md:p-12 rounded-[2rem] md:rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl'>
 							<AnimatePresence mode='wait'>
 								{status === 'success' ? (
 									<motion.div
 										key='success'
 										initial={{ opacity: 0, scale: 0.9 }}
 										animate={{ opacity: 1, scale: 1 }}
-										className='text-center py-20'
+										className='text-center py-10 md:py-20'
 									>
-										<div className='text-6xl mb-6'>✅</div>
-										<h3 className='text-3xl font-bold text-white mb-4'>
-											Спасибо!
+										<div className='text-5xl md:text-6xl mb-6'>✅</div>
+										<h3 className='text-2xl md:text-3xl font-bold text-white mb-4'>
+											{t('contact.success_title')}
 										</h3>
-										<p className='text-zinc-400 text-lg'>
-											Мы получили ваше сообщение и ответим в ближайшее время.
+										<p className='text-zinc-400 text-base md:text-lg'>
+											{t('contact.success_msg')}
 										</p>
 										<button
 											onClick={() => setStatus('idle')}
 											className='mt-8 text-[#d4af37] underline underline-offset-4 hover:text-white transition-colors'
 										>
-											Отправить еще раз
+											{t('contact.send_again')}
 										</button>
 									</motion.div>
 								) : (
 									<motion.form
 										key='form'
 										onSubmit={handleSubmit}
-										className='space-y-6'
+										className='space-y-5 md:space-y-6'
 										exit={{ opacity: 0, y: -20 }}
 									>
-										<div className='grid md:grid-cols-2 gap-6'>
+										<div className='grid md:grid-cols-2 gap-5 md:gap-6'>
 											<div className='space-y-2'>
-												<label className='text-sm text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
-													Имя
+												<label className='text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
+													{t('contact.form.name')}
 												</label>
 												<input
 													type='text'
-													placeholder='Иван'
+													placeholder={t('contact.form.name_placeholder')}
 													required
 													className={inputStyles}
 												/>
 											</div>
 											<div className='space-y-2'>
-												<label className='text-sm text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
-													Email
+												<label className='text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
+													{t('contact.form.email')}
 												</label>
 												<input
 													type='email'
-													placeholder='ivan@mail.com'
+													placeholder='mail@example.com'
 													required
 													className={inputStyles}
 												/>
 											</div>
 										</div>
 										<div className='space-y-2'>
-											<label className='text-sm text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
-												Тема
+											<label className='text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
+												{t('contact.form.subject')}
 											</label>
 											<input
 												type='text'
-												placeholder='Разработка сайта'
+												placeholder={t('contact.form.subject_placeholder')}
 												className={inputStyles}
 											/>
 										</div>
 										<div className='space-y-2'>
-											<label className='text-sm text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
-												Сообщение
+											<label className='text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold'>
+												{t('contact.form.message')}
 											</label>
 											<textarea
 												rows='4'
-												placeholder='Расскажите о вашем проекте...'
+												placeholder={t('contact.form.message_placeholder')}
 												className={`${inputStyles} resize-none`}
 											/>
 										</div>
 										<motion.button
-											whileHover={{ scale: 1.02 }}
+											whileHover={{ scale: 1.01 }}
 											whileTap={{ scale: 0.98 }}
 											disabled={status === 'loading'}
-											className={`w-full py-5 rounded-2xl font-bold text-lg uppercase tracking-[0.2em] transition-all duration-500 ${
+											className={`w-full py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg uppercase tracking-[0.2em] transition-all duration-500 ${
 												status === 'loading'
 													? 'bg-zinc-800 text-zinc-500 cursor-wait'
-													: 'bg-[#d4af37] text-black hover:bg-white shadow-[0_10px_30px_rgba(212,175,55,0.2)] hover:shadow-[#d4af37]/30'
+													: 'bg-[#d4af37] text-black hover:bg-white shadow-[0_10px_30px_rgba(212,175,55,0.2)]'
 											}`}
 										>
 											{status === 'loading'
-												? 'Отправка...'
-												: 'Отправить запрос'}
+												? t('contact.form.sending')
+												: t('contact.form.submit')}
 										</motion.button>
 									</motion.form>
 								)}
@@ -228,7 +232,7 @@ const ContactSection = () => {
 			</section>
 
 			<Footer />
-		</>
+		</div>
 	)
 }
 

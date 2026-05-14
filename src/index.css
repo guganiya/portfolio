@@ -3,14 +3,14 @@
 /* * {
 	outline: 4px green solid;
 /* index.css или App.css */
-@media (pointer: fine) {
+/* @media (pointer: fine) {
 	body,
 	a,
 	button,
 	.cursor-none {
 		cursor: none !important;
 	}
-}
+} */
 /* Полная перезапись скроллбара */
 
 /* 1. Стили для Chrome, Safari, Edge */

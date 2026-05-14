@@ -34,7 +34,7 @@ const Hero = () => {
 				className='relative z-10 max-w-7xl mx-auto px-6 lg:px-10 flex flex-col md:flex-row items-center justify-between pt-32 pb-16 md:pt-40 md:pb-24 min-h-screen'
 			>
 				{/* Первая часть (Компонент Текста) */}
-				<div className='w-full md:w-1/2 md:pr-10 mb-20 md:mb-0'>
+				<div className='w-full md:w-1/2 md:pr-10 mb-0 md:mb-0'>
 					<HeroText />
 				</div>
 

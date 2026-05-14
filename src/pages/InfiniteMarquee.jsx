@@ -6,46 +6,45 @@ import { motion } from 'framer-motion'
 const languages = [
 	{
 		name: 'JavaScript',
-		icon: 'https://cdn.worldvectorlogo.com/logos/logo-javascript.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
 		url: '#',
 	},
 	{
 		name: 'TypeScript',
-		icon: 'https://cdn.worldvectorlogo.com/logos/typescript.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
 		url: '#',
 	},
 	{
 		name: 'React',
-		icon: 'https://cdn.worldvectorlogo.com/logos/react-2.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
 		url: '#',
 	},
 	{
 		name: 'Python',
-		icon: 'https://cdn.worldvectorlogo.com/logos/python-5.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
 		url: '#',
 	},
 	{
 		name: 'Go',
-		icon: 'https://cdn.worldvectorlogo.com/logos/go-6.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg',
 		url: '#',
 	},
 	{
 		name: 'Tailwind',
-		icon: 'https://cdn.worldvectorlogo.com/logos/tailwindcss.svg',
+		icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-original.svg',
 		url: '#',
 	},
 	{
 		name: 'Node.js',
-		icon: 'https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
 		url: '#',
 	},
 	{
 		name: 'FastAPI',
-		icon: 'https://cdn.worldvectorlogo.com/logos/fastapi-1.svg',
+		icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg',
 		url: '#',
 	},
 ]
-
 const TechCard = ({ tech }) => (
 	<motion.a
 		href={tech.url}
@@ -55,7 +54,7 @@ const TechCard = ({ tech }) => (
 			scale: 1.1,
 			borderColor: 'rgba(212, 175, 55, 0.5)',
 		}}
-		className='flex-shrink-0 relative w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center p-5 transition-all duration-500 group cursor-none'
+		className='flex-shrink-0 relative w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center p-5 transition-all duration-500 group '
 	>
 		{/* Внутреннее мягкое золотое свечение при наведении */}
 		<div className='absolute inset-0 rounded-full bg-[#d4af37] opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-500' />
@@ -77,7 +76,7 @@ const TechMarquee = () => {
 	const tripledLanguages = [...languages, ...languages, ...languages]
 
 	return (
-		<section className='w-full py-20 overflow-hidden bg-transparent select-none'>
+		<section className='w-full py-10 overflow-hidden bg-transparent select-none -mt-15'>
 			<div className='flex relative items-center'>
 				{/* Градиентные маски для эффекта "растворения" по бокам */}
 				<div className='absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-zinc-950 to-transparent z-20 pointer-events-none' />

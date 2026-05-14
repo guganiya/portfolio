@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 const icons = {
 	github: (
@@ -19,7 +20,7 @@ const icons = {
 			<path d='M9 18c-4.51 2-5-2-7-2' />
 		</svg>
 	),
-	linkedin: (
+	instagram: (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
 			width='20'
@@ -31,9 +32,9 @@ const icons = {
 			strokeLinecap='round'
 			strokeLinejoin='round'
 		>
-			<path d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z'></path>
-			<rect x='2' y='9' width='4' height='12'></rect>
-			<circle cx='4' cy='4' r='2'></circle>
+			<rect width='20' height='20' x='2' y='2' rx='5' ry='5' />
+			<path d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' />
+			<line x1='17.5' x2='17.51' y1='6.5' y2='6.5' />
 		</svg>
 	),
 	telegram: (
@@ -55,37 +56,56 @@ const icons = {
 }
 
 const Footer = () => {
+	const { t } = useTranslation()
+
 	const socialLinks = [
-		{ name: 'Github', icon: icons.github, href: '#', color: '#ffffff' },
-		{ name: 'LinkedIn', icon: icons.linkedin, href: '#', color: '#0077b5' },
-		{ name: 'Telegram', icon: icons.telegram, href: '#', color: '#0088cc' },
+		{
+			name: 'Github',
+			icon: icons.github,
+			href: 'https://github.com',
+			color: '#ffffff',
+		},
+		{
+			name: 'Instagram',
+			icon: icons.instagram,
+			href: 'https://instagram.com',
+			color: '#E1306C',
+		},
+		{
+			name: 'Telegram',
+			icon: icons.telegram,
+			href: 'https://t.me',
+			color: '#0088cc',
+		},
 	]
 
 	return (
 		<footer className='relative w-full py-12 border-t border-white/5 bg-[#0a0a0a] overflow-hidden'>
-			{/* Мягкая подсветка в углу */}
+			{/* Мягкая подсветка */}
 			<div className='absolute bottom-0 right-0 w-[300px] h-[300px] bg-[#d4af37]/5 blur-[100px] pointer-events-none' />
 
 			<div className='max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8'>
-				{/* ЛЕВАЯ ЧАСТЬ: Лого и Копирайт */}
+				{/* ЛЕВАЯ ЧАСТЬ */}
 				<div className='flex flex-col items-center md:items-start gap-2'>
 					<Link
 						to='/'
-						className='text-2xl font-black tracking-tighter text-white uppercase italic'
+						className='text-2xl font-black tracking-tighter text-white uppercase'
 					>
-						Portfolio<span className='text-[#d4af37]'>.</span>
+						{t('common.logo_text')}
+						<span className='text-[#d4af37]'>.</span>
 					</Link>
-					<p className='text-zinc-500 text-sm font-medium tracking-wider'>
-						© {new Date().getFullYear()} ВСЕ ПРАВА ЗАЩИЩЕНЫ
+					<p className='text-zinc-500 text-sm font-medium tracking-wider uppercase'>
+						© {new Date().getFullYear()} {t('footer.rights')}
 					</p>
 				</div>
 
-				{/* ЦЕНТРАЛЬНАЯ ЧАСТЬ: Девиз (опционально) */}
+				{/* ЦЕНТРАЛЬНАЯ ЧАСТЬ */}
 				<div className='hidden lg:block text-zinc-600 text-sm uppercase tracking-[0.3em] font-bold'>
-					Code with <span className='text-zinc-400'>Passion</span>
+					{t('footer.motto_start')}{' '}
+					<span className='text-zinc-400'>{t('footer.motto_end')}</span>
 				</div>
 
-				{/* ПРАВАЯ ЧАСТЬ: Соцсети (твой фирменный стиль) */}
+				{/* ПРАВАЯ ЧАСТЬ: Соцсети */}
 				<div className='flex items-center gap-4'>
 					{socialLinks.map(social => (
 						<motion.a
@@ -104,7 +124,6 @@ const Footer = () => {
 							<div className='relative z-10 text-zinc-500 group-hover:text-white transition-colors duration-300 scale-90'>
 								{social.icon}
 							</div>
-							{/* Точка под иконкой */}
 							<div
 								className='absolute bottom-1 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300'
 								style={{
@@ -117,7 +136,6 @@ const Footer = () => {
 				</div>
 			</div>
 
-			{/* Нижняя декоративная полоса */}
 			<div className='mt-12 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent' />
 		</footer>
 	)

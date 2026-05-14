@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
-// SVG Иконки в едином стиле
-const icons = {
+// --- Иконки ---
+const ICONS = {
 	github: (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -21,7 +22,7 @@ const icons = {
 			<path d='M9 18c-4.51 2-5-2-7-2' />
 		</svg>
 	),
-	linkedin: (
+	telegram: (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
 			width='22'
@@ -33,12 +34,11 @@ const icons = {
 			strokeLinecap='round'
 			strokeLinejoin='round'
 		>
-			<path d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z'></path>
-			<rect x='2' y='9' width='4' height='12'></rect>
-			<circle cx='4' cy='4' r='2'></circle>
+			<line x1='22' y1='2' x2='11' y2='13'></line>
+			<polygon points='22 2 15 22 11 13 2 9 22 2'></polygon>
 		</svg>
 	),
-	globe: (
+	instagram: (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
 			width='22'
@@ -50,98 +50,126 @@ const icons = {
 			strokeLinecap='round'
 			strokeLinejoin='round'
 		>
-			<circle cx='12' cy='12' r='10'></circle>
-			<line x1='2' y1='12' x2='22' y2='12'></line>
-			<path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'></path>
+			<rect width='20' height='20' x='2' y='2' rx='5' ry='5' />
+			<path d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z' />
+			<line x1='17.5' x2='17.51' y1='6.5' y2='6.5' />
 		</svg>
 	),
 }
 
-const ProfileCard = ({ title, photo, links, isBack = false }) => (
-	<div
-		className={`absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between rounded-[3rem] border border-white/20 backdrop-blur-xl bg-gradient-to-b from-white/10 to-white/5 shadow-2xl ${
-			isBack ? '[transform:rotateY(180deg)]' : ''
-		}`}
-		style={{
-			backfaceVisibility: 'hidden',
-			WebkitBackfaceVisibility: 'hidden',
-			transformStyle: 'preserve-3d',
-		}}
-	>
-		{/* Внутреннее свечение (Rim light) */}
-		<div className='absolute inset-px rounded-[3rem] border border-white/10 pointer-events-none' />
+const getSocialLinks = () => [
+	{
+		icon: ICONS.github,
+		url: 'https://github.com',
+		color: '#ffffff',
+		label: 'GitHub',
+	},
+	{
+		icon: ICONS.telegram,
+		url: 'https://t.me',
+		color: '#0088cc',
+		label: 'Telegram',
+	},
+	{
+		icon: ICONS.instagram,
+		url: 'https://instagram.com',
+		color: '#E1306C',
+		label: 'Instagram',
+	},
+]
 
-		{/* Заголовок */}
-		<motion.div style={{ translateZ: 60 }} className='text-center'>
-			<h3 className='text-sm font-medium text-[#d4af37] uppercase tracking-[0.3em] mb-1'>
-				Profile
-			</h3>
-			<h2 className='text-2xl font-bold text-white tracking-tight leading-none uppercase italic'>
-				{title}
-			</h2>
-		</motion.div>
+const ProfileCard = memo(({ title, photo, isBack = false }) => {
+	const { t } = useTranslation()
+	const links = getSocialLinks()
 
-		{/* Фото */}
-		<motion.div style={{ translateZ: 100 }} className='relative group/img'>
-			<div className='absolute -inset-4 bg-[#d4af37]/10 rounded-full blur-2xl group-hover/img:bg-[#d4af37]/20 transition-all duration-500' />
-			<div className='relative w-44 h-44 md:w-52 md:h-52 rounded-full border-[6px] border-white/10 overflow-hidden shadow-2xl transform transition-transform duration-500 group-hover/img:scale-105'>
-				<img
-					src={photo}
-					alt={title}
-					className='w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-700'
-				/>
-			</div>
-		</motion.div>
+	return (
+		<div
+			className={`absolute inset-0 w-full h-full p-8 flex flex-col items-center justify-between rounded-[3rem] border border-white/20 backdrop-blur-xl bg-gradient-to-b from-white/10 to-white/5 shadow-2xl ${
+				isBack ? '[transform:rotateY(180deg)]' : ''
+			}`}
+			style={{
+				backfaceVisibility: 'hidden',
+				WebkitBackfaceVisibility: 'hidden',
+				transformStyle: 'preserve-3d',
+			}}
+		>
+			<div className='absolute inset-px rounded-[3rem] border border-white/10 pointer-events-none' />
 
-		{/* Иконки-ссылки в новом стиле */}
-		<motion.div style={{ translateZ: 80 }} className='flex gap-4 items-center'>
-			{links.map((link, index) => (
-				<motion.a
-					key={index}
-					href={link.url}
-					target='_blank'
-					rel='noopener noreferrer'
-					whileHover={{ y: -5, scale: 1.1 }}
-					whileTap={{ scale: 0.9 }}
-					className='group relative w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-300 overflow-hidden'
-				>
-					{/* Свечение фона при ховере */}
-					<div
-						className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300'
-						style={{ backgroundColor: link.color }}
+			<motion.div style={{ translateZ: 60 }} className='text-center'>
+				<h3 className='text-xs font-medium text-[#d4af37] uppercase tracking-[0.3em] mb-1'>
+					{t('cards.profile_label')}
+				</h3>
+				<h2 className='text-2xl font-bold text-white tracking-tight uppercase italic'>
+					{title}
+				</h2>
+			</motion.div>
+
+			{/* Фото: Hover-эффект убран, всегда активно */}
+			<motion.div style={{ translateZ: 100 }} className='relative'>
+				<div className='absolute -inset-4 bg-[#d4af37]/20 rounded-full blur-2xl transition-all duration-500' />
+				<div className='relative w-44 h-44 md:w-52 md:h-52 rounded-full border-[6px] border-white/10 overflow-hidden shadow-2xl transition-transform duration-500 scale-105'>
+					<img
+						src={photo}
+						alt={title}
+						className='w-full h-full object-cover transition-all duration-700'
+						loading='lazy'
 					/>
+				</div>
+			</motion.div>
 
-					{/* Иконка */}
-					<div className='relative z-10 text-zinc-400 group-hover:text-white transition-colors duration-300'>
-						{link.icon}
-					</div>
+			{/* Соцсети: Hover-эффект ВОЗВРАЩЕН */}
+			<motion.div
+				style={{ translateZ: 80 }}
+				className='flex gap-4 items-center'
+			>
+				{links.map((link, idx) => (
+					<motion.a
+						key={idx}
+						href={link.url}
+						target='_blank'
+						rel='noopener noreferrer'
+						aria-label={link.label}
+						whileHover={{ y: -5, scale: 1.1 }}
+						whileTap={{ scale: 0.9 }}
+						className='group relative w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-300'
+					>
+						<div
+							className='absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl'
+							style={{ backgroundColor: link.color }}
+						/>
+						<div className='relative z-10 text-zinc-400 group-hover:text-white transition-colors duration-300'>
+							{link.icon}
+						</div>
+						<div
+							className='absolute bottom-1.5 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300'
+							style={{
+								backgroundColor: link.color,
+								boxShadow: `0 0 8px ${link.color}`,
+							}}
+						/>
+					</motion.a>
+				))}
+			</motion.div>
+		</div>
+	)
+})
 
-					{/* Точка-индикатор снизу */}
-					<div
-						className='absolute bottom-1.5 w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300'
-						style={{
-							backgroundColor: link.color,
-							boxShadow: `0 0 8px ${link.color}`,
-						}}
-					/>
-				</motion.a>
-			))}
-		</motion.div>
-	</div>
-)
+ProfileCard.displayName = 'ProfileCard'
 
 const InteractiveHeroCard = () => {
+	const { t } = useTranslation()
 	const [isFlipped, setIsFlipped] = useState(false)
 	const cardRef = useRef(null)
 
 	const x = useMotionValue(0)
 	const y = useMotionValue(0)
 
-	const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 })
-	const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 })
+	const springConfig = { stiffness: 100, damping: 20, restDelta: 0.001 }
+	const mouseXSpring = useSpring(x, springConfig)
+	const mouseYSpring = useSpring(y, springConfig)
 
-	const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['15deg', '-15deg'])
-	const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-15deg', '15deg'])
+	const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [15, -15])
+	const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-15, 15])
 
 	const handleMouseMove = e => {
 		if (!cardRef.current) return
@@ -156,55 +184,34 @@ const InteractiveHeroCard = () => {
 	}
 
 	useEffect(() => {
-		const timer = setInterval(() => {
-			setIsFlipped(prev => !prev)
-		}, 5000)
+		const timer = setInterval(() => setIsFlipped(v => !v), 5000)
 		return () => clearInterval(timer)
 	}, [])
 
-	// Данные с цветами для иконок
-	const frontendData = {
-		title: 'Frontend Dev',
-		photo: '/guga.jpg',
-		links: [
-			{ icon: icons.github, url: '#', color: '#ffffff' },
-			{ icon: icons.linkedin, url: '#', color: '#0077b5' },
-			{ icon: icons.globe, url: '#', color: '#d4af37' },
-		],
-	}
-
-	const fullstackData = {
-		title: 'Fullstack Dev',
-		photo: '/romik.jpg',
-		links: [
-			{ icon: icons.github, url: '#', color: '#ffffff' },
-			{ icon: icons.globe, url: '#', color: '#d4af37' },
-		],
-	}
-
 	return (
-		<div className='w-full min-h-[700px] flex items-center justify-center bg-transparent perspective-1000'>
+		<div className='w-full min-h-[700px] flex items-center justify-center perspective-1000 select-none'>
 			<motion.div
 				ref={cardRef}
 				onMouseMove={handleMouseMove}
 				onMouseLeave={handleMouseLeave}
-				style={{
-					rotateX,
-					rotateY,
-					transformStyle: 'preserve-3d',
-				}}
-				animate={{ y: [0, -20, 0] }}
-				transition={{ y: { duration: 5, repeat: Infinity, ease: 'easeInOut' } }}
-				className='relative w-[340px] h-[500px] md:w-[400px] md:h-[560px] '
+				style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+				animate={{ y: [0, -15, 0] }}
+				transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+				className='relative w-[340px] h-[500px] md:w-[400px] md:h-[560px] cursor-pointer'
+				onClick={() => setIsFlipped(!isFlipped)}
 			>
 				<motion.div
 					className='w-full h-full relative'
 					style={{ transformStyle: 'preserve-3d' }}
 					animate={{ rotateY: isFlipped ? 180 : 0 }}
-					transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+					transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
 				>
-					<ProfileCard {...frontendData} />
-					<ProfileCard {...fullstackData} isBack />
+					<ProfileCard title={t('cards.frontend.name')} photo='/guga.jpg' />
+					<ProfileCard
+						title={t('cards.fullstack.name')}
+						photo='/romik.jpg'
+						isBack
+					/>
 				</motion.div>
 			</motion.div>
 		</div>

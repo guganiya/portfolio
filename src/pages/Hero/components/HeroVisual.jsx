@@ -60,21 +60,21 @@ const ICONS = {
 const getSocialLinks = () => [
 	{
 		icon: ICONS.github,
-		url: 'https://github.com',
+		url: 'https://github.com/CodeAssasinKing',
 		color: '#ffffff',
 		label: 'GitHub',
 	},
 	{
-		icon: ICONS.telegram,
-		url: 'https://t.me',
-		color: '#0088cc',
-		label: 'Telegram',
-	},
-	{
 		icon: ICONS.instagram,
-		url: 'https://instagram.com',
+		url: 'https://www.instagram.com/codeassasinking/',
 		color: '#E1306C',
 		label: 'Instagram',
+	},
+	{
+		icon: ICONS.telegram,
+		url: 'https://t.me/Worker_000000',
+		color: '#0088cc',
+		label: 'Telegram',
 	},
 ]
 

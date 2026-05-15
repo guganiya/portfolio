@@ -62,19 +62,19 @@ const Footer = () => {
 		{
 			name: 'Github',
 			icon: icons.github,
-			href: 'https://github.com',
+			href: 'https://github.com/CodeAssasinKing',
 			color: '#ffffff',
 		},
 		{
 			name: 'Instagram',
 			icon: icons.instagram,
-			href: 'https://instagram.com',
+			href: 'https://www.instagram.com/codeassasinking/',
 			color: '#E1306C',
 		},
 		{
 			name: 'Telegram',
 			icon: icons.telegram,
-			href: 'https://t.me',
+			href: 'https://t.me/Worker_000000',
 			color: '#0088cc',
 		},
 	]

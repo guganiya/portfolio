@@ -16,6 +16,24 @@ const projects = [
 		link: '/projects/mava',
 		color: '#1a1a1a',
 	},
+	{
+		title: 'Owaz',
+		description:
+			'Этот сайт создан для маркетплейса музыкального оборудования Owaz. Мы реализовали удобный интерфейс для выбора и покупки профессиональной аудиоаппаратуры и инструментов.',
+		src: '/project/owaz/acoustic-guitar-musical-keys-white-background-flat-lay (1).jpg',
+		logo: '/project/owaz/logo.png',
+		link: '/projects/owaz',
+		color: '#262626',
+	},
+	{
+		title: 'Alyx',
+		description:
+			'Этот сайт создан для платформы Alyx, посвященной профессиональному световому оборудованию. Мы разработали интерактивный каталог и информационный ресурс для подбора световых решений любого масштаба.',
+		src: '/project/alyx/world-theatre-day-celebration.jpg',
+		logo: '/project/alyx/LOGO-ALYX-WIHT.png',
+		link: '/projects/alyx',
+		color: '#333333',
+	},
 ]
 
 const StickyCard = ({
@@ -65,7 +83,7 @@ const StickyCard = ({
 
 				<div className='relative h-full w-full flex flex-col md:flex-row items-end md:items-center p-8 md:p-16 z-10'>
 					<div className='flex-1 text-left'>
-						<div className='w-16 h-16 md:w-24 md:h-24 mb-6 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-4'>
+						<div className='w-16 h-16 md:w-28 md:h-28 mb-6 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-4'>
 							<img
 								src={logo}
 								alt='logo'
@@ -141,12 +159,19 @@ export const Projects = () => {
 				<div className='relative flex flex-col gap-0'>
 					{projects.map((project, i) => {
 						const targetScale = 1 - (projects.length - i) * 0.05
+
+						// Определяем ключ для перевода (mava или owaz)
+						// Мы берем title из объекта и приводим к нижнему регистру,
+						// чтобы он совпал с ключом в JSON (например, "Owaz" -> "owaz")
+						const projectKey = project.title.toLowerCase().split(' ')[0]
+
 						return (
 							<StickyCard
 								key={`p_${i}`}
 								i={i}
-								title={t('projects.mava.title')}
-								description={t('projects.mava.description')}
+								/* Теперь данные будут браться динамически */
+								title={t(`projects.${projectKey}.title`)}
+								description={t(`projects.${projectKey}.description`)}
 								src={project.src}
 								logo={project.logo}
 								link={project.link}
@@ -157,7 +182,6 @@ export const Projects = () => {
 						)
 					})}
 				</div>
-
 				{/* Финальная кнопка */}
 				<div className='h-[40vh] md:h-[60vh] flex items-center justify-center relative overflow-hidden'>
 					{/* Уменьшил размер фонового свечения для мобилок */}

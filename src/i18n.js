@@ -14,7 +14,7 @@ i18n
 			en: {
 				translation: {
 					//navbar
-					common: { logo: 'Portfolio.', logo_text: 'Portfolio' },
+					common: { logo: 'Developers.', logo_text: 'Developers' },
 					nav: {
 						home: 'Home',
 						languages: 'Languages',
@@ -64,8 +64,8 @@ i18n
 						description:
 							'Have an idea or a project? Leave a request, and we will discuss how to bring it to life at the highest level.',
 						email_label: 'Email us',
-						location_label: 'Our office',
-						location_value: '10 Example St, Moscow',
+						location_label: 'Our location',
+						location_value: 'Turkmenistan, Ashgabat.',
 						success_title: 'Thank you!',
 						success_msg:
 							'We have received your message and will get back to you soon.',
@@ -95,13 +95,23 @@ i18n
 							description:
 								'This website was created for MAVA, a major logistics company. We developed a platform for supply chain optimization and global freight management.',
 						},
+						owaz: {
+							title: 'Owaz',
+							description:
+								'This website was created for the Owaz musical equipment marketplace. We implemented a user-friendly interface for choosing and purchasing professional audio gear and instruments.',
+						},
+						alyx: {
+							title: 'Alyx',
+							description:
+								'This website was created for the Alyx platform, dedicated to professional lighting equipment. We developed an interactive catalog and an information resource for selecting lighting solutions of any scale.',
+						},
 					},
 				},
 			},
 			ru: {
 				translation: {
 					//navbar
-					common: { logo: 'Portfolio.', logo_text: 'Portfolio' },
+					common: { logo: 'Developers.', logo_text: 'Developers' },
 					nav: {
 						home: 'Главная',
 						languages: 'Языки',
@@ -151,8 +161,8 @@ i18n
 						description:
 							'Есть идея или проект? Оставьте заявку, и мы обсудим, как воплотить это в жизнь на высшем уровне.',
 						email_label: 'Напишите нам',
-						location_label: 'Наш офис',
-						location_value: 'г. Москва, ул. Примерная 10',
+						location_label: 'Наша локация',
+						location_value: 'Туркменистан, г. Ашхабад.',
 						success_title: 'Спасибо!',
 						success_msg:
 							'Мы получили ваше сообщение и ответим в ближайшее время.',
@@ -181,6 +191,16 @@ i18n
 							title: 'MAVA Logistics',
 							description:
 								'Этот сайт создан для крупной логистической компании MAVA. Мы разработали платформу для оптимизации цепочек поставок и управления глобальными грузоперевозками.',
+						},
+						owaz: {
+							title: 'Owaz',
+							description:
+								'Этот сайт создан для маркетплейса музыкального оборудования Owaz. Мы реализовали удобный интерфейс для выбора и покупки профессиональной аудиоаппаратуры и инструментов.',
+						},
+						alyx: {
+							title: 'Alyx',
+							description:
+								'Этот сайт создан для платформы Alyx, посвященной профессиональному световому оборудованию. Мы разработали интерактивный каталог и информационный ресурс для подбора световых решений любого масштаба.',
 						},
 					},
 				},

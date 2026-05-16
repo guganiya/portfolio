@@ -319,27 +319,38 @@ const Navbar = () => {
 						className='fixed inset-0 h-screen w-screen bg-[#0a0a0a] z-[105] flex flex-col items-center justify-center'
 					>
 						<div className='flex flex-col items-center space-y-8'>
-							{navLinks.map((link, i) => (
-								<motion.div
-									key={i}
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: i * 0.1 }}
-								>
-									<RouterLink
-										to={link.type === 'scroll' ? `/#${link.to}` : link.to}
-										onClick={() => setIsOpen(false)}
-										className='text-4xl font-black text-zinc-600 hover:text-[#d4af37] cursor-pointer uppercase transition-colors'
-									>
-										{link.name}
-									</RouterLink>
-								</motion.div>
-							))}
+							{navLinks.map((link, i) => {
+								// Полностью исключаем вкладку "Projects" на мобилках
+								if (link.to === 'projects') return null
 
-							{/* MOBILE SOCIALS (Optional: add here if you want them inside the burger too) */}
+								return (
+									<motion.div
+										key={i}
+										initial={{ opacity: 0, y: 20 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ delay: i * 0.1 }}
+									>
+										<RouterLink
+											to={link.type === 'scroll' ? `/#${link.to}` : link.to}
+											onClick={() => setIsOpen(false)}
+											className='text-4xl font-black text-zinc-600 hover:text-[#d4af37] cursor-pointer uppercase transition-colors'
+										>
+											{link.name}
+										</RouterLink>
+									</motion.div>
+								)
+							})}
+
+							{/* MOBILE SOCIALS */}
 							<div className='flex gap-6 pt-6 opacity-50'>
 								{socialLinks.map(s => (
-									<a key={s.name} href={s.href} className='text-white'>
+									<a
+										key={s.name}
+										href={s.href}
+										className='text-white'
+										target='_blank'
+										rel='noreferrer'
+									>
 										{s.icon}
 									</a>
 								))}

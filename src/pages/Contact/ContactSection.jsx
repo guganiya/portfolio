@@ -41,6 +41,8 @@ const icons = {
   ),
 };
 
+const VITE_API_KEY = import.meta.env.VITE_API_KEY;
+
 const ContactSection = () => {
   const { t } = useTranslation();
   const [status, setStatus] = useState("idle");
@@ -52,7 +54,7 @@ const ContactSection = () => {
     // Собираем данные из полей формы
     const formData = new FormData(e.target);
     // Твой ключ доступа
-    formData.append("access_key", "68441ff7-e81b-4d27-b05b-0a5b3ee18415");
+    formData.append("access_key", VITE_API_KEY); 
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {

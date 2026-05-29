@@ -42,6 +42,11 @@ i18n
 							part5: 'If it can be',
 							part6: 'opened in a browser',
 							part7: 'we are already creating it',
+							part8: 'We build',
+							part9: 'websites',
+							part10: 'that bring customers.',
+							part11: 'For barbershops, schools, restaurants and local businesses.',
+
 						},
 					},
 

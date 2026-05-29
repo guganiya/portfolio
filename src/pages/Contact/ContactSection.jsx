@@ -49,9 +49,7 @@ const ContactSection = () => {
     e.preventDefault();
     setStatus("loading");
 
-    // Собираем данные из полей формы
     const formData = new FormData(e.target);
-    // Твой ключ доступа
     formData.append("access_key", "68441ff7-e81b-4d27-b05b-0a5b3ee18415");
 
     try {
@@ -64,45 +62,52 @@ const ContactSection = () => {
 
       if (data.success) {
         setStatus("success");
-        e.target.reset(); // Очистить форму
+        e.target.reset();
       } else {
-        console.log("Error", data);
+        console.error("Error", data);
         setStatus("idle");
         alert("Something went wrong!");
       }
     } catch (error) {
-      console.log("Error", error);
+      console.error("Error", error);
       setStatus("idle");
     }
   };
 
+  // Base font size set to text-base (16px) specifically to prevent iOS auto-zoom layout disruption
   const inputStyles = `
-    w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 
-    text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#d4af37]/50 
-    transition-all duration-300 focus:bg-white/10
+    w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 md:px-6 md:py-4 
+    text-base text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#d4af37]/50 
+    transition-all duration-300 focus:bg-white/10 touch-manipulation
   `;
 
+  // Detect desktop screen sizes dynamically for high-performance animation distribution
+  const isDesktop =
+    typeof window !== "undefined"
+      ? window.matchMedia("(min-width: 1024px)").matches
+      : true;
+
   return (
-    <div className="bg-zinc-950">
+    <div className="bg-zinc-950 min-h-screen flex flex-col justify-between selection:bg-[#d4af37]/20">
       <Navbar />
 
       <section
         id="contact"
-        className="relative min-h-screen flex items-center justify-center px-4 py-20 pt-32 lg:pt-24 overflow-hidden"
+        className="relative flex-grow flex items-center justify-center px-4 py-16 pt-28 md:pt-36 lg:py-24 overflow-hidden content-visibility-auto"
       >
-        {/* Декоративное свечение */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-[#d4af37]/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none" />
+        {/* Soft Ambient Radial Blur Glow - Excluded on weak mobile devices */}
+        <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
-          {/* ЛЕВАЯ ЧАСТЬ */}
+        <div className="max-w-6xl w-full mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-center relative z-10">
+          {/* LEFT SIDE CONTENT CONTAINER */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={isDesktop ? { opacity: 0, x: -40 } : { opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             className="text-center lg:text-left"
           >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase leading-[0.9] mb-8">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white uppercase leading-[0.95] tracking-tight mb-6 md:mb-8">
               {t("contact.title_1")} <br />
               <span className="text-[#d4af37]">
                 {t("contact.title_accent")}
@@ -110,48 +115,49 @@ const ContactSection = () => {
               <br />
               {t("contact.title_2")}
             </h2>
-            <p className="text-zinc-400 text-lg md:text-xl max-w-md mx-auto lg:mx-0 font-light leading-relaxed mb-12">
+
+            <p className="text-zinc-400 text-base md:text-xl max-w-md mx-auto lg:mx-0 font-light leading-relaxed mb-8 md:mb-12">
               {t("contact.description")}
             </p>
 
-            <div className="space-y-6 md:space-y-8 flex flex-col items-start">
-              {/* Email Item */}
+            <div className="space-y-4 md:space-y-6 max-w-md mx-auto lg:mx-0 w-full">
+              {/* Email Touch Item */}
               <a
                 href="mailto:bayramowramazan85@gmail.com"
-                className="flex flex-row items-center gap-4 md:gap-6 group cursor-pointer w-full"
+                className="flex items-center gap-4 p-2.5 rounded-2xl hover:bg-white/[0.02] active:bg-white/[0.05] group transition-all duration-300 w-full touch-manipulation"
               >
-                <div className="relative flex-shrink-0 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50">
-                  <div className="relative z-10 text-zinc-400 group-hover:text-[#d4af37] transition-colors duration-500">
+                <div className="relative flex-shrink-0 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50">
+                  <div className="relative z-10 text-zinc-400 group-hover:text-[#d4af37] group-active:text-[#d4af37] transition-colors duration-500 scale-90 md:scale-100">
                     {icons.email}
                   </div>
                 </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-[0.2em] mb-1">
+                <div className="flex flex-col text-left min-w-0">
+                  <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-[0.2em] mb-0.5 font-bold">
                     {t("contact.email_label")}
                   </span>
-                  <span className="text-sm md:text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors duration-300 break-all">
+                  <span className="text-sm sm:text-base md:text-xl font-bold text-white group-hover:text-[#d4af37] group-active:text-[#d4af37] transition-colors duration-300 truncate break-all">
                     bayramowramazan85@gmail.com
                   </span>
                 </div>
               </a>
 
-              {/* Location Item (Кликабельный блок карты) */}
+              {/* Location Touch Item */}
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Ashgabat+Mir+3+Peache"
+                href="https://maps.google.com"
                 target="_blank"
                 rel="noreferrer"
-                className="flex flex-row items-center gap-4 md:gap-6 group cursor-pointer w-full"
+                className="flex items-center gap-4 p-2.5 rounded-2xl hover:bg-white/[0.02] active:bg-white/[0.05] group transition-all duration-300 w-full touch-manipulation"
               >
-                <div className="relative flex-shrink-0 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50">
-                  <div className="relative z-10 text-zinc-400 group-hover:text-[#d4af37] transition-colors duration-500">
+                <div className="relative flex-shrink-0 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md transition-all duration-500 group-hover:border-[#d4af37]/50">
+                  <div className="relative z-10 text-zinc-400 group-hover:text-[#d4af37] group-active:text-[#d4af37] transition-colors duration-500 scale-90 md:scale-100">
                     {icons.location}
                   </div>
                 </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-[0.2em] mb-1">
+                <div className="flex flex-col text-left min-w-0">
+                  <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-[0.2em] mb-0.5 font-bold">
                     {t("contact.location_label")}
                   </span>
-                  <span className="text-sm md:text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors duration-300">
+                  <span className="text-sm sm:text-base md:text-xl font-bold text-white group-hover:text-[#d4af37] group-active:text-[#d4af37] transition-colors duration-300 truncate">
                     {t("contact.location_value")}
                   </span>
                 </div>
@@ -159,33 +165,41 @@ const ContactSection = () => {
             </div>
           </motion.div>
 
-          {/* ПРАВАЯ ЧАСТЬ: Форма */}
+          {/* RIGHT SIDE FORM CONTAINER */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={isDesktop ? { opacity: 0, y: 40 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{
+              duration: 0.6,
+              delay: isDesktop ? 0.2 : 0,
+              ease: "easeOut",
+            }}
             className="relative w-full"
           >
-            <div className="relative z-10 p-6 md:p-12 rounded-[2rem] md:rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+            <div className="relative z-10 p-5 sm:p-8 md:p-12 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
               <AnimatePresence mode="wait">
                 {status === "success" ? (
                   <motion.div
                     key="success"
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-10 md:py-20"
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-center py-8 md:py-16"
                   >
-                    <div className="text-5xl md:text-6xl mb-6">✅</div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                    <div className="text-5xl md:text-6xl mb-6 select-none">
+                      ✅
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
                       {t("contact.success_title")}
                     </h3>
-                    <p className="text-zinc-400 text-base md:text-lg">
+                    <p className="text-zinc-400 text-sm md:text-base max-w-sm mx-auto">
                       {t("contact.success_msg")}
                     </p>
                     <button
                       onClick={() => setStatus("idle")}
-                      className="mt-8 text-[#d4af37] underline underline-offset-4 hover:text-white transition-colors"
+                      className="mt-8 text-[#d4af37] text-sm font-bold uppercase tracking-wider underline underline-offset-4 hover:text-white active:text-white transition-colors"
                     >
                       {t("contact.send_again")}
                     </button>
@@ -194,13 +208,14 @@ const ContactSection = () => {
                   <motion.form
                     key="form"
                     onSubmit={handleSubmit}
-                    className="space-y-5 md:space-y-6"
-                    exit={{ opacity: 0, y: -20 }}
+                    className="space-y-4 md:space-y-5"
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <div className="grid md:grid-cols-2 gap-5 md:gap-6">
-                      {/* ПОЛЕ ИМЕНИ */}
-                      <div className="space-y-2">
-                        <label className="text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold">
+                    <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+                      {/* NAME INPUT */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] md:text-xs text-zinc-500 ml-1 uppercase tracking-widest font-black select-none">
                           {t("contact.form.name")}
                         </label>
                         <input
@@ -208,13 +223,14 @@ const ContactSection = () => {
                           name="name"
                           placeholder={t("contact.form.name_placeholder")}
                           required
+                          autoComplete="name"
                           className={inputStyles}
                         />
                       </div>
 
-                      {/* ПОЛЕ EMAIL */}
-                      <div className="space-y-2">
-                        <label className="text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold">
+                      {/* EMAIL INPUT */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] md:text-xs text-zinc-500 ml-1 uppercase tracking-widest font-black select-none">
                           {t("contact.form.email")}
                         </label>
                         <input
@@ -222,14 +238,15 @@ const ContactSection = () => {
                           name="email"
                           placeholder="mail@example.com"
                           required
+                          autoComplete="email"
                           className={inputStyles}
                         />
                       </div>
                     </div>
 
-                    {/* ПОЛЕ СООБЩЕНИЯ */}
-                    <div className="space-y-2">
-                      <label className="text-xs text-zinc-500 ml-2 uppercase tracking-widest font-bold">
+                    {/* MESSAGE TEXTAREA */}
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] md:text-xs text-zinc-500 ml-1 uppercase tracking-widest font-black select-none">
                         {t("contact.form.message")}
                       </label>
                       <textarea
@@ -241,16 +258,16 @@ const ContactSection = () => {
                       />
                     </div>
 
-                    {/* КНОПКА ОТПРАВКИ */}
+                    {/* SUBMIT BUTTON */}
                     <motion.button
-                      whileHover={{ scale: 1.01 }}
+                      whileHover={isDesktop ? { scale: 1.01 } : {}}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
                       disabled={status === "loading"}
-                      className={`w-full py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg uppercase tracking-[0.2em] transition-all duration-500 ${
+                      className={`w-full py-4 rounded-xl md:rounded-2xl font-black text-sm md:text-base uppercase tracking-[0.2em] transition-all duration-300 ${
                         status === "loading"
                           ? "bg-zinc-800 text-zinc-500 cursor-wait"
-                          : "bg-[#d4af37] text-black hover:bg-white shadow-[0_10px_30px_rgba(212,175,55,0.2)]"
+                          : "bg-[#d4af37] text-black active:bg-white md:hover:bg-white shadow-[0_8px_25px_rgba(212,175,55,0.15)]"
                       }`}
                     >
                       {status === "loading"

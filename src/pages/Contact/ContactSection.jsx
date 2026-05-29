@@ -41,6 +41,8 @@ const icons = {
   ),
 };
 
+const VITE_API_KEY = import.meta.env.VITE_API_KEY;
+
 const ContactSection = () => {
   const { t } = useTranslation();
   const [status, setStatus] = useState("idle");
